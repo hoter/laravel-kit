@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\UserActivity;
 
 /**
  * @property int $id
@@ -26,6 +27,7 @@ use App\Models\Comment;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $last_activity_at
  */
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -44,6 +46,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_activity_at' => 'datetime',
         ];
     }
 
@@ -53,6 +56,10 @@ class User extends Authenticatable
 
     public function comments(): HasMany {
         return $this->hasMany(Comment::class);
+    }
+
+    public function activities(): HasMany {
+        return $this->hasMany(UserActivity::class);
     }
 
     public function isAdmin(): bool

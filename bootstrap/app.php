@@ -9,6 +9,7 @@ use App\Http\Middleware\CheckPermission;
 use App\Http\Middleware\CheckRole;
 use App\Http\Middleware\MaintenanceMode;
 use App\Http\Middleware\ThrottleByRole;
+use App\Http\Middleware\TrackUserActivity;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,11 +20,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin'          => CheckAdmin::class,
-            'maintenance'    => MaintenanceMode::class,
-            'permission'     => CheckPermission::class,
-            'role'           => CheckRole::class,
-            'throttleByRole' => ThrottleByRole::class,
+            'admin'           => CheckAdmin::class,
+            'maintenance'     => MaintenanceMode::class,
+            'permission'      => CheckPermission::class,
+            'role'            => CheckRole::class,
+            'throttleByRole'  => ThrottleByRole::class,
+            'track.activity'  => TrackUserActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
