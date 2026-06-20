@@ -22,6 +22,7 @@ Route::middleware('permission:publish-posts')->group(function () {
 });
 
 Route::middleware('role:admin')->prefix('admin')->group(function () {
+    Route::view('/', 'post.index');
     Route::view('/posts', 'post.index');
 });
 
