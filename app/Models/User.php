@@ -55,6 +55,21 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isEditor(): bool
+    {
+        return $this->role === 'editor';
+    }
+
+    public function isUser(): bool
+    {
+        return $this->role === 'user';
+    }
+
     public function initials(): string
     {
         return collect(explode(' ', $this->name))

@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class CheckRole
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
+    public function handle(Request $request, Closure $next, string $role): Response
+    {
+        // Проверяем, авторизован ли пользователь
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Пожалуйста, войдите в систему.');
+        }
+
+        // Проверяем роль
+        if (auth()->user()->role !== $role) {
+            abort(403, 'У вас нет прав.');
+        }
+
+        return $next($request);
+    }
+}
