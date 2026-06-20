@@ -22,6 +22,7 @@ class CheckPermission
 
         // Проверяем роль
         $hasAccess = match(auth()->user()->role) {
+            'admin' => true,
             'editor' => in_array($permission, ['view-posts', 'create-posts', 'edit-posts', 'publish-posts']),
             'user' => in_array($permission, ['view-posts', 'create-comments']),
             default => in_array($permission, ['view-posts'])
