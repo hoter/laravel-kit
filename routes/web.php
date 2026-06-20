@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\RegisterController;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -35,5 +36,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('/posts/{post}/edit', 'post.edit');
     Route::view('/posts/{post}/delete', 'post.delete');
 });
+
+Route::get('/reg', function() {
+   return view('reg');
+})->middleware('guest');
+
+Route::post('/reg', [RegisterController::class, 'register'])->middleware('guest')->name('reg');
 
 require __DIR__.'/settings.php';
