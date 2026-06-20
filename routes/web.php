@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
+use App\Http\Controllers\PostController;
 
 Route::view('/', 'welcome')->name('home');
 
@@ -11,6 +12,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('permission:create-posts')->group(function () {
     Route::view('/posts/create', 'post.create');
+    Route::post('/posts/create', [PostController::class, 'store'])->name('posts.store');
 });
 
 Route::middleware('permission:publish-posts')->group(function () {
@@ -23,13 +25,13 @@ Route::middleware('permission:publish-posts')->group(function () {
 
 Route::middleware('role:admin')->prefix('admin')->group(function () {
     Route::view('/', 'post.index');
-    Route::view('/posts', 'post.index');
+    Route::view('/posts', 'post.index')->name('posts.index');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/posts/{post}', function (Post $post) {
         return view('post.view', ['post' => $post]);
-    });
+    })->name('posts.show');
     Route::view('/posts/{post}/edit', 'post.edit');
     Route::view('/posts/{post}/delete', 'post.delete');
 });
