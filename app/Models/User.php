@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\UserActivity;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Review;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -61,6 +64,18 @@ class User extends Authenticatable
 
     public function activities(): HasMany {
         return $this->hasMany(UserActivity::class);
+    }
+
+    public function cart(): \Illuminate\Database\Eloquent\Relations\HasOne {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class);
+    }
+
+    public function reviews(): HasMany {
+        return $this->hasMany(Review::class);
     }
 
     public function isAdmin(): bool
