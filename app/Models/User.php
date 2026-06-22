@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\UserActivity;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property int $id
@@ -34,7 +35,7 @@ use App\Models\UserActivity;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * Get the attributes that should be cast.
