@@ -43,4 +43,6 @@ Route::get('/reg', function() {
 
 Route::post('/reg', [RegisterController::class, 'register'])->middleware('guest')->name('reg');
 
+Route::get('/currency', [RegisterController::class, 'currency']);
+
 require __DIR__.'/settings.php';
