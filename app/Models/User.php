@@ -93,6 +93,11 @@ class User extends Authenticatable
         return $this->role === 'user';
     }
 
+    public function hasPublishedPosts(): bool
+    {
+        return $this->posts()->where('is_published', true)->exists();
+    }
+
     public function initials(): string
     {
         return collect(explode(' ', $this->name))

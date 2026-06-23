@@ -14,7 +14,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::published()->latest()->get();
+
+        return view('post.index', compact('posts'));
     }
 
     /**
@@ -48,7 +50,9 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        return view('post.view', ['post' => $post]);
     }
 
     /**
@@ -64,7 +68,16 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'min:5', 'max:255'],
+            'content' => ['required', 'string', 'min:50'],
+        ]);
+
+        $post->update($validated);
+
+        return redirect()->route('posts.show', $post);
     }
 
     /**
@@ -72,6 +85,10 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $post->delete();
+
+        return redirect()->route('posts.list');
     }
 }

@@ -23,4 +23,14 @@ class Post extends Model
     public function author(): BelongsTo {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function scopePublished($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    public function getShortContent(): string
+    {
+        return mb_substr($this->content ?? '', 0, 100);
+    }
 }
