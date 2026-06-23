@@ -4,9 +4,25 @@ namespace Tests\Feature;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Events\PostPublished;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+
+test('publishing a post dispatches event', function () {
+    Event::fake();
+
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->post('/posts', [
+        'title' => 'New Post',
+        'content' => 'This content is long enough to pass the minimum validation length of fifty characters.',
+    ]);
+
+    Event::assertDispatched(PostPublished::class);
+});
 
 // index
 test('index returns 200 and correct view', function () {

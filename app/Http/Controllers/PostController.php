@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Str;
+use App\Events\PostPublished;
 
 class PostController extends Controller
 {
@@ -41,6 +42,8 @@ class PostController extends Controller
         $data['user_id'] = auth()->id();
 
         $post = Post::create($data);
+
+        PostPublished::dispatch($post);
 
         return redirect()->route('posts.show', $post);
     }
